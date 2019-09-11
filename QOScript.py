@@ -34,7 +34,7 @@ monthselection = 0
 def wrap(): #runs the whole shebang
     logging.info("QO functions have started to run")
     try:
-        QO1(exQO1, reports.get(), under10min.get(), str(month.current()+2))
+        QO1(exQO1, reports.get(), under10min.get(), month.current()+2)
     except:
         logging.error("QO1 Failed")
     try:
@@ -324,8 +324,8 @@ def QO3ontime(ship, train): # figures out if the ship date is before training an
     total = total + 1
     ship = ship.split("-")
     train = train.split("-")
-    month = train[0]
-    if ship[0] <= train[0] and ship[1] <= train[1] and ship[2] <= train[2]:
+    month = ship[0]
+    if (ship[0] <= train[0] and ship[2] <= train[2]) or (ship[1] <= train[1] and ship[0] == train[0]):
         ontim3 = ontim3 + 1
         return("Yes")
     else: return("No")
