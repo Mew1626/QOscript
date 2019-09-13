@@ -35,20 +35,26 @@ def wrap(): #runs the whole shebang
     logging.info("QO functions have started to run")
     try:
         QO1(exQO1, reports.get(), under10min.get(), month.current()+2)
+        fin.set("QO1 ")
     except:
         logging.error("QO1 Failed")
+       
     try:
         QO2(exQO2, purchasecsv, warantycsv)
+        fin.set(fin.get() + "QO2 ")
     except:
         logging.error("QO2 Failed")
     try:
-        QO3(exQO3, evalcsv) 
+        QO3(exQO3, evalcsv)
+        fin.set(fin.get() + "QO3 ") 
     except:
         logging.error("QO3 Failed")
     try:
         QO4(exQO4, loncsv) 
+        fin.set(fin.get() + "and QO4 ")
     except:
         logging.error("QO4 Failed")
+    fin.set(fin.get() + "Finished")
 
 def browse(iden):
     global warantycsv, purchasecsv, evalcsv, loncsv
@@ -92,15 +98,18 @@ def gui():
     mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
     root.columnconfigure(0, weight=1)
     root.rowconfigure(0, weight=1)
-
+    global fin
+    fin = StringVar()
     #actual gui elements
-    reports_entry = ttk.Entry(mainframe, width=7, textvariable=reports)
-    under10min_entry = ttk.Entry(mainframe, width=7, textvariable=under10min)
+    reports_entry = ttk.Entry(mainframe, width=5, textvariable=reports)
+    under10min_entry = ttk.Entry(mainframe, width=5, textvariable=under10min)
     reports_entry.grid(column=0, row= 2, sticky= (W, E))
     under10min_entry.grid(column=1, row= 2, sticky= (W, E))
 
     ttk.Label(mainframe, text="Reports").grid(column=0, row= 1, sticky= (W, E))
     ttk.Label(mainframe, text="Under 10 Min").grid(column=1, row= 1, sticky= (W, E))
+    ttk.Label(mainframe, textvariable=fin).grid(column=2, row= 1, sticky= (W, E))
+
 
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     ttk.Label(mainframe, text="Month:").grid(column=0, row= 3, sticky= (W, E))
@@ -113,11 +122,12 @@ def gui():
 
     ttk.Button(mainframe, text="Execute", command=wrap).grid(column=2, row= 13, sticky= (W, E))
 
-    global pur, war, eva, lon 
+    global pur, war, eva, lon
     pur = StringVar()
     war = StringVar()
     eva = StringVar()
     lon = StringVar()
+   
 
     ttk.Label(mainframe, text="Purchase CSV").grid(column=0, row= 4, sticky= (W, E))
     ttk.Entry(mainframe, textvariable=pur).grid(column=1, row=4, sticky=(W, E))
